@@ -56,7 +56,7 @@ export function HomePage() {
             Teatro Be artist
           </p>
           <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-semibold italic tracking-tight text-[var(--accent-red)] sm:text-5xl">
-            Оляля
+            О Ля Ля
           </h1>
           <p className="mt-1 text-lg font-semibold uppercase tracking-wide text-stone-900">
             или Скок в постель
@@ -66,22 +66,22 @@ export function HomePage() {
             <span className="rounded-full bg-white/80 px-3 py-1">Лиссабон</span>
           </div>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-stone-600">
-            Centro Cultural de Carnide · Rua do Rio Cávado 3, 1600-997 Lisboa
+            Centro Cultural de Carnide - Rua do Rio Cávado 3, 1600-997 Lisboa
           </p>
         </header>
 
-        <div className="mt-6 overflow-hidden rounded-xl border border-rose-200/70">
+        <div className="mt-6 rounded-xl border border-rose-200/70 bg-stone-100/50 p-2 sm:p-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/poster.jpg"
-            alt="Афиша спектакля Оляля или Скок в постель"
-            className="max-h-64 w-full object-cover object-center sm:max-h-80"
+            alt="Афиша спектакля О Ля Ля или Скок в постель"
+            className="mx-auto h-auto w-full max-w-2xl object-contain"
           />
         </div>
 
         <section className="mt-8 space-y-3">
           <h2 className="text-center font-[family-name:var(--font-display)] text-xl font-semibold text-stone-900">
-            Купить билет — план зала
+            Купить билет - план зала
           </h2>
 
           <div className="stage mx-auto max-w-3xl rounded-lg px-4 py-4 text-center">
@@ -109,7 +109,7 @@ export function HomePage() {
             Нажмите свободное место (синее или зелёное). На телефоне схему можно сдвинуть пальцем.
           </p>
           <p className="mx-auto max-w-xl rounded-lg border border-rose-200 bg-rose-50/90 px-3 py-2.5 text-center text-sm text-stone-800">
-            Подтверждение билета придёт на e-mail после проверки оплаты — обычно в течение суток.
+            Подтверждение билета придёт на e-mail после проверки оплаты - обычно в течение суток.
           </p>
 
           {loadingMap ? (
@@ -155,7 +155,7 @@ export function HomePage() {
               Адрес
             </h2>
             <p className="mt-1 leading-relaxed">
-              Teatro Be artist · Centro Cultural de Carnide
+              Teatro Be artist - Centro Cultural de Carnide
               <br />
               Rua do Rio Cávado 3, 1600-997 Lisboa, Portugal
             </p>
@@ -165,7 +165,7 @@ export function HomePage() {
               Цены
             </h2>
             <ul className="mt-1 list-inside list-disc space-y-1 text-stone-700">
-              <li>Синие места (центр, ближе к сцене): {PRICE_BLUE_EUR} €</li>
+              <li>Синие места (центр ближе к сцене): {PRICE_BLUE_EUR} €</li>
               <li>Зелёные места: {PRICE_GREEN_EUR} €</li>
             </ul>
           </div>

@@ -12,9 +12,9 @@ const sans = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  title: "Оляля или Скок в постель — билеты",
+  title: "О Ля Ля или Скок в постель - билеты",
   description:
-    'Билеты на спектакль "Оляля или Скок в постель", Teatro Be artist, Centro Cultural de Carnide, Lisboa. 29 ноября 2026, 19:00.',
+    'Билеты на спектакль "О Ля Ля или Скок в постель", Teatro Be artist, Centro Cultural de Carnide, Lisboa. 29 ноября 2026, 19:00.',
 };
 
 export default function RootLayout({
