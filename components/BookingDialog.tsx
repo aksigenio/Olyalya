@@ -13,7 +13,7 @@ export function BookingDialog({
   onBooked,
 }: {
   seat: number;
-  row: number;
+  row: string;
   priceLabel: string;
   onClose: () => void;
   onBooked: () => void;
@@ -43,6 +43,7 @@ export function BookingDialog({
       fd.set("firstName", firstName.trim());
       fd.set("lastName", lastName.trim());
       fd.set("email", email.trim());
+      fd.set("row", row);
       fd.set("seat", String(seat));
       fd.set("receipt", file);
       const res = await fetch("/api/book", { method: "POST", body: fd });
@@ -103,7 +104,7 @@ export function BookingDialog({
             {REVOLUT_LINE}
           </p>
           <p className="mt-2 text-xs text-stone-600">
-            В комментарии к платежу напишите: билет {seat} и ваш email.
+            В комментарии к платежу напишите: ряд {row} место {seat} и ваш email.
           </p>
         </div>
 

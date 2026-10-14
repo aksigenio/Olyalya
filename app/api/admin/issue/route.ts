@@ -58,11 +58,11 @@ export async function POST(req: Request) {
   }
 
   const seatNum = row.seat_number as number;
-  const rowNum = Number(row.row_letter) || 0;
+  const rowLetter = String(row.row_letter);
 
   const { subject, text } = customerTicketEmail({
     seat: seatNum,
-    row: rowNum,
+    row: rowLetter,
   });
 
   const poster = await loadTicketPosterForEmail();
@@ -70,7 +70,7 @@ export async function POST(req: Request) {
 
   const html = customerTicketEmailHtml({
     seat: seatNum,
-    row: rowNum,
+    row: rowLetter,
     posterCid: POSTER_CID,
     hasPoster,
   });

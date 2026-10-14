@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServiceSupabase } from "@/lib/supabase-server";
 import { priceEur } from "@/lib/pricing";
-import { findRowForSeat, isValidSeat, rowLetter } from "@/lib/seats";
+import { isValidSeat } from "@/lib/seats";
 import { adminNewBookingEmail } from "@/lib/email";
 import { sendSmtpMail, smtpConfigured } from "@/lib/smtp";
 
@@ -36,13 +36,14 @@ export async function POST(req: Request) {
   const firstName = String(form.get("firstName") ?? "").trim();
   const lastName = String(form.get("lastName") ?? "").trim();
   const email = String(form.get("email") ?? "").trim();
+  const row = String(form.get("row") ?? "").trim().toUpperCase();
   const seatNum = Number(form.get("seat"));
   const file = form.get("receipt");
 
   if (!firstName || !lastName || !email) {
     return NextResponse.json({ error: "Заполните имя, фамилию и email." }, { status: 400 });
   }
-  if (!isValidSeat(seatNum)) {
+  if (!isValidSeat(row, seatNum)) {
     return NextResponse.json({ error: "Некорректное место." }, { status: 400 });
   }
   if (!(file instanceof File) || file.size === 0) {
@@ -52,12 +53,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Файл слишком большой (макс. 8 МБ)." }, { status: 400 });
   }
 
-  const row = findRowForSeat(seatNum)!;
-  const amount = priceEur(seatNum);
+  const amount = priceEur(row, seatNum);
 
   const { data: existing, error: exErr } = await sb
     .from("bookings")
     .select("id")
+    .eq("row_letter", row)
     .eq("seat_number", seatNum)
     .in("status", ["pending", "issued"])
     .maybeSingle();
@@ -75,7 +76,7 @@ export async function POST(req: Request) {
   const { data: inserted, error: insErr } = await sb
     .from("bookings")
     .insert({
-      row_letter: rowLetter(row),
+      row_letter: row,
       seat_number: seatNum,
       price_eur: amount,
       first_name: firstName,

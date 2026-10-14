@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { ROWS, findRowForSeat, seatKey } from "@/lib/seats";
+import { ROWS, seatKey, type SeatRef } from "@/lib/seats";
 import {
   PRICE_BLUE_EUR,
   PRICE_GREEN_EUR,
@@ -14,20 +14,23 @@ import { BookingDialog } from "./BookingDialog";
 type SeatStatus = "free" | "pending" | "sold";
 
 export function HomePage() {
-  const [statusMap, setStatusMap] = useState<Map<number, SeatStatus>>(new Map());
+  const [statusMap, setStatusMap] = useState<Map<string, SeatStatus>>(new Map());
   const [loadingMap, setLoadingMap] = useState(true);
-  const [selection, setSelection] = useState<number | null>(null);
+  const [selection, setSelection] = useState<SeatRef | null>(null);
 
   const refreshOccupied = useCallback(async () => {
     setLoadingMap(true);
     try {
       const res = await fetch("/api/seats", { cache: "no-store" });
       const data = await res.json();
-      const next = new Map<number, SeatStatus>();
-      const list: { seat: number; status: string }[] = Array.isArray(data.seats) ? data.seats : [];
+      const next = new Map<string, SeatStatus>();
+      const list: { row: string; seat: number; status: string }[] = Array.isArray(data.seats)
+        ? data.seats
+        : [];
       for (const item of list) {
-        if (item.status === "issued") next.set(item.seat, "sold");
-        else if (item.status === "pending") next.set(item.seat, "pending");
+        const key = seatKey(item.row, item.seat);
+        if (item.status === "issued") next.set(key, "sold");
+        else if (item.status === "pending") next.set(key, "pending");
       }
       setStatusMap(next);
     } catch {
@@ -42,11 +45,9 @@ export function HomePage() {
   }, [refreshOccupied]);
 
   const dialogPrice = useMemo(() => {
-    if (selection === null) return 0;
-    return priceEur(selection);
+    if (!selection) return 0;
+    return priceEur(selection.row, selection.seat);
   }, [selection]);
-
-  const dialogRow = selection !== null ? findRowForSeat(selection) ?? 0 : 0;
 
   return (
     <main className="mx-auto max-w-6xl px-3 py-8 pb-16 sm:px-6 sm:py-10">
@@ -56,7 +57,7 @@ export function HomePage() {
             Teatro Be artist
           </p>
           <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-semibold italic tracking-tight text-[var(--accent-red)] sm:text-5xl">
-            О Ля Ля
+            О-Ля-Ля
           </h1>
           <p className="mt-1 text-lg font-semibold uppercase tracking-wide text-stone-900">
             или Скок в постель
@@ -74,7 +75,7 @@ export function HomePage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/poster.jpg"
-            alt="Афиша спектакля О Ля Ля или Скок в постель"
+            alt="Афиша спектакля О-Ля-Ля или Скок в постель"
             className="mx-auto h-auto w-full max-w-2xl object-contain"
           />
         </div>
@@ -132,11 +133,12 @@ export function HomePage() {
                           />
                         ))}
                         {row.seats.map((n) => (
-                          <Fragment key={seatKey(n)}>
+                          <Fragment key={seatKey(row.row, n)}>
                             <SeatButton
+                              row={row.row}
                               seat={n}
-                              status={statusMap.get(n) ?? "free"}
-                              onPick={() => setSelection(n)}
+                              status={statusMap.get(seatKey(row.row, n)) ?? "free"}
+                              onPick={() => setSelection({ row: row.row, seat: n })}
                             />
                           </Fragment>
                         ))}
@@ -178,10 +180,10 @@ export function HomePage() {
         </p>
       </div>
 
-      {selection !== null ? (
+      {selection ? (
         <BookingDialog
-          seat={selection}
-          row={dialogRow}
+          seat={selection.seat}
+          row={selection.row}
           priceLabel={formatPriceEUR(dialogPrice)}
           onClose={() => setSelection(null)}
           onBooked={() => {
@@ -195,17 +197,19 @@ export function HomePage() {
 }
 
 function SeatButton({
+  row,
   seat,
   status,
   onPick,
 }: {
+  row: string;
   seat: number;
   status: SeatStatus;
   onPick: () => void;
 }) {
   const busy = status !== "free";
-  const price = priceEur(seat);
-  const blue = isBlueSeat(seat);
+  const price = priceEur(row, seat);
+  const blue = isBlueSeat(row, seat);
   const base =
     "shrink-0 flex items-center justify-center rounded-sm border font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-red)] focus-visible:ring-offset-1 " +
     "h-7 min-w-7 px-0.5 text-[10px] sm:h-8 sm:min-w-8 sm:text-[11px]";
@@ -228,7 +232,7 @@ function SeatButton({
           ? status === "sold"
             ? "Продано"
             : "Ожидает оплаты"
-          : `${formatPriceEUR(price)}, место ${seat}${blue ? " (синее)" : ""}`
+          : `${formatPriceEUR(price)}, ряд ${row}, место ${seat}${blue ? " (синее)" : ""}`
       }
       onClick={() => {
         if (!busy) onPick();

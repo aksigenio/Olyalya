@@ -13,13 +13,13 @@ function esc(s: string): string {
 export function adminNewBookingEmail(opts: {
   bookingId: string;
   seat: number;
-  row: number;
+  row: string;
   priceEur: number;
   firstName: string;
   lastName: string;
   email: string;
 }) {
-  const subject = `Заявка на билет, О Ля Ля, место ${opts.seat}`;
+  const subject = `Заявка на билет, О-Ля-Ля, ряд ${opts.row}, место ${opts.seat}`;
   const text = [
     `ID заявки: ${opts.bookingId}`,
     `Место: ${opts.seat} (ряд ${opts.row})`,
@@ -33,12 +33,12 @@ export function adminNewBookingEmail(opts: {
   return { subject, text };
 }
 
-export function customerTicketEmail(opts: { seat: number; row: number }) {
-  const subject = `Билет, "О Ля Ля или Скок в постель", место ${opts.seat}`;
+export function customerTicketEmail(opts: { seat: number; row: string }) {
+  const subject = `Билет, "О-Ля-Ля или Скок в постель", ряд ${opts.row}, место ${opts.seat}`;
   const text = [
     "Спасибо, что купили билет.",
     "",
-    'Спектакль "О Ля Ля или Скок в постель".',
+    'Спектакль "О-Ля-Ля или Скок в постель".',
     `Место: ${opts.seat} (ряд ${opts.row}).`,
     "",
     "Дата: 29 ноября 2026, время: 19:00",
@@ -53,7 +53,7 @@ export function customerTicketEmail(opts: { seat: number; row: number }) {
 
 export function customerTicketEmailHtml(opts: {
   seat: number;
-  row: number;
+  row: string;
   posterCid: string;
   hasPoster: boolean;
 }): string {
@@ -61,7 +61,7 @@ export function customerTicketEmailHtml(opts: {
     .map((line) => esc(line))
     .join("<br/>");
   const posterBlock = opts.hasPoster
-    ? `<p style="margin:20px 0 0"><img src="cid:${opts.posterCid}" alt="О Ля Ля" width="560" style="max-width:100%;height:auto;border-radius:10px;display:block" /></p>`
+    ? `<p style="margin:20px 0 0"><img src="cid:${opts.posterCid}" alt="О-Ля-Ля" width="560" style="max-width:100%;height:auto;border-radius:10px;display:block" /></p>`
     : "";
 
   return `<!DOCTYPE html>
@@ -69,7 +69,7 @@ export function customerTicketEmailHtml(opts: {
 <head><meta charset="utf-8" /></head>
 <body style="margin:0;padding:24px;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.55;color:#1a1814;background:#f7efe8;">
   <p>Спасибо, что купили билет.</p>
-  <p><strong>"О Ля Ля или Скок в постель"</strong><br/>
+  <p><strong>"О-Ля-Ля или Скок в постель"</strong><br/>
   Место: <strong>${opts.seat}</strong> (ряд <strong>${opts.row}</strong>).</p>
   <p>Дата: <strong>29 ноября 2026</strong>, время: <strong>19:00</strong></p>
   <p style="margin-top:12px">Адрес:<br/>${venueHtml}</p>

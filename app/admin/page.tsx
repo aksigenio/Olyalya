@@ -71,7 +71,7 @@ export default function AdminPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-12 text-stone-100">
-      <h1 className="text-2xl font-semibold">О Ля Ля - заявки на билеты</h1>
+      <h1 className="text-2xl font-semibold">О-Ля-Ля - заявки на билеты</h1>
       <p className="mt-2 text-sm text-stone-400">
         Пароль из переменной <code className="text-stone-200">ADMIN_PASSWORD</code>. После проверки
         оплаты нажмите «Отправить билет».
