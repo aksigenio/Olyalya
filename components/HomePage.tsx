@@ -82,7 +82,7 @@ export function HomePage() {
 
         <section className="mt-8 space-y-3">
           <h2 className="text-center font-[family-name:var(--font-display)] text-xl font-semibold text-stone-900">
-            Купить билет - план зала
+            Поддержать искусство - план зала
           </h2>
 
           <div className="stage mx-auto max-w-3xl rounded-lg px-4 py-4 text-center">
@@ -170,6 +170,22 @@ export function HomePage() {
               <li>Синие места (центр ближе к сцене): {PRICE_BLUE_EUR} €</li>
               <li>Зелёные места: {PRICE_GREEN_EUR} €</li>
             </ul>
+          </div>
+          <div>
+            <h2 className="font-[family-name:var(--font-display)] text-lg font-semibold text-stone-900">
+              Контакты
+            </h2>
+            <p className="mt-1 leading-relaxed">
+              По всем вопросам обращайтесь в Telegram:{" "}
+              <a
+                className="font-semibold underline decoration-stone-400 underline-offset-2"
+                href="https://t.me/alefborhes"
+                target="_blank"
+                rel="noreferrer"
+              >
+                @alefborhes
+              </a>
+            </p>
           </div>
         </section>
 

@@ -1,9 +1,9 @@
 import { isValidSeat } from "./seats";
 
-export const PRICE_GREEN_EUR = 15;
-export const PRICE_BLUE_EUR = 20;
+export const PRICE_GREEN_EUR = 17;
+export const PRICE_BLUE_EUR = 22;
 
-/** Синие (центральные) места 20€: A4–A13, B5–B14, C4–C13, D3–D12, E2–E11. */
+/** Синие (центральные) места 22€: A4–A13, B5–B14, C4–C13, D3–D12, E2–E11. */
 const BLUE_SEATS = new Set<string>([
   ...keys("A", 4, 13),
   ...keys("B", 5, 14),
